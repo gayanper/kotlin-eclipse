@@ -16,4 +16,34 @@
 	<version>0.8.21-SNAPSHOT</version>
   <packaging>eclipse-repository</packaging>
 
+	<properties>
+		<site-version>nightly</site-version>
+	</properties>
+	<profiles>
+		<profile>
+			<id>upload</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.4.0</version>
+						<executions>
+							<execution>
+								<id>upload-content</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>${basedir}/upload.sh</executable>
+									<commandlineArgs>${env.BINTRAY_API_KEY} ${env.BINTRAY_USER} ${project.build.directory}/kotlin-eclipse-plugin.zip ${site-version}</commandlineArgs>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
